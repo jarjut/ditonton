@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "2158ee02-fc58-4c37-bde2-c96ce5640fb0",
+    "colName": "TheMovieDB",
+    "created": "2022-11-17T08:07:18.355Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "39e67b9c-f04e-4fbe-b388-340b964d8982",
+        "name": "TV",
+        "containerId": "",
+        "created": "2022-11-17T08:07:33.987Z",
+        "sortNum": 10000
+      }
+    ],
+    "settings": {
+      "headers": [],
+      "tests": [],
+      "options": {
+        "baseUrl": "{{baseUrl}}"
+      }
+    }
+  }
+]

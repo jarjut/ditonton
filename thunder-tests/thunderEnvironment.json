@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "a38869da-4d06-48b7-ac14-1bf5655209a6",
+    "name": "(Global Env)",
+    "default": false,
+    "global": true,
+    "sortNum": -2,
+    "created": "2022-11-17T08:08:25.373Z",
+    "modified": "2022-11-17T08:09:08.803Z",
+    "data": [
+      {
+        "name": "baseUrl",
+        "value": "https://api.themoviedb.org/3"
+      }
+    ]
+  },
+  {
+    "_id": "1d461d38-1ef0-4ea3-849a-208773e01621",
+    "name": "(Local Env)",
+    "default": false,
+    "global": true,
+    "local": true,
+    "sortNum": -1,
+    "created": "2022-11-17T08:11:12.420Z",
+    "modified": "2022-11-17T08:11:12.420Z",
+    "data": []
+  }
+]
