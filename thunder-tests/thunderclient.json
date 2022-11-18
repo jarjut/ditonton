@@ -89,11 +89,11 @@
     "colId": "2158ee02-fc58-4c37-bde2-c96ce5640fb0",
     "containerId": "39e67b9c-f04e-4fbe-b388-340b964d8982",
     "name": "Detail",
-    "url": "/tv/65930?api_key={{v3Auth}}",
+    "url": "/tv/90462?api_key={{v3Auth}}",
     "method": "GET",
     "sortNum": 50000,
     "created": "2022-11-17T08:19:20.814Z",
-    "modified": "2022-11-17T08:34:13.858Z",
+    "modified": "2022-11-18T05:35:51.998Z",
     "headers": [],
     "params": [
       {

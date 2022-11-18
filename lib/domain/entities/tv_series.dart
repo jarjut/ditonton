@@ -31,6 +31,21 @@ class TvSeries extends Equatable {
   final String? name;
   final String? originalName;
 
+  const TvSeries.watchlist({
+    required this.id,
+    this.overview,
+    this.name,
+    this.posterPath,
+  })  : popularity = null,
+        backdropPath = null,
+        voteAverage = null,
+        firstAirDate = null,
+        originCountry = null,
+        genreIds = null,
+        originalLanguage = null,
+        voteCount = null,
+        originalName = null;
+
   @override
   List<Object?> get props => [
         id,

@@ -1,0 +1,22 @@
+{
+	"page": 1,
+	"results": [
+		{
+			"backdrop_path": "/mCt3coepPkF6QlDQSO9tqI46yIV.jpg",
+			"first_air_date": "2017-11-20",
+			"genre_ids": [10759, 16, 35, 10751],
+			"id": 68665,
+			"name": "Big Hero 6 The Series",
+			"origin_country": ["US"],
+			"original_language": "en",
+			"original_name": "Big Hero 6 The Series",
+			"overview": "Overview",
+			"popularity": 41.565,
+			"poster_path": "/ldG4xXImCPyv5U5gbRmlB8On842.jpg",
+			"vote_average": 7.9,
+			"vote_count": 54
+		}
+	],
+	"total_pages": 27,
+	"total_results": 527
+}

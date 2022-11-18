@@ -68,7 +68,7 @@ class TvRepositoryImpl implements TvRepository {
   }
 
   @override
-  Future<Either<Failure, List<TvSeries>>> getTvSeriesRecommendations(
+  Future<Either<Failure, List<TvSeries>>> getTvRecommendations(
     int id,
   ) async {
     try {

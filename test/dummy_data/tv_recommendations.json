@@ -1,0 +1,24 @@
+{
+	"page": 1,
+	"results": [
+		{
+			"adult": false,
+			"backdrop_path": "/nTvM4mhqNlHIvUkI1gVnW6XP7GG.jpg",
+			"id": 85937,
+			"name": "Name",
+			"original_language": "ja",
+			"original_name": "Original Name",
+			"overview": "Overview",
+			"poster_path": "/wrCVHdkBlBWdJUZPvnJWcBRuhSY.jpg",
+			"media_type": "tv",
+			"genre_ids": [16, 10765, 10759],
+			"popularity": 104.948,
+			"first_air_date": "2019-04-06",
+			"vote_average": 8.721,
+			"vote_count": 4510,
+			"origin_country": ["JP"]
+		}
+	],
+	"total_pages": 2,
+	"total_results": 40
+}

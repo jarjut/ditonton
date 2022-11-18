@@ -35,9 +35,9 @@ class TvSeriesModel extends Equatable {
   factory TvSeriesModel.fromJson(Map<String, dynamic> json) => TvSeriesModel(
         id: json['id'] as int,
         posterPath: json['poster_path'] as String?,
-        popularity: json['popularity'] as double,
+        popularity: json['popularity'].toDouble(),
         backdropPath: json['backdrop_path'] as String?,
-        voteAverage: json['vote_average'] as double,
+        voteAverage: json['vote_average'].toDouble(),
         overview: json['overview'] as String,
         firstAirDate: json['first_air_date'] as String,
         originCountry: List<String>.from(json['origin_country'] as List),
