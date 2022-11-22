@@ -7,12 +7,14 @@ import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/tv_series/tv_series_list_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => di.locator<WatchlistMovieNotifier>(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TvSeriesListNotifier>(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -67,7 +72,7 @@ class MyApp extends StatelessWidget {
 
 Route<dynamic>? appGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case '/home':
+    case HomeMoviePage.routeName:
       return MaterialPageRoute(builder: (_) => const HomeMoviePage());
     case PopularMoviesPage.routeName:
       return CupertinoPageRoute(
@@ -83,6 +88,8 @@ Route<dynamic>? appGenerateRoute(RouteSettings settings) {
         builder: (_) => MovieDetailPage(id: id),
         settings: settings,
       );
+    case TvSeriesListPage.routeName:
+      return MaterialPageRoute(builder: (_) => const TvSeriesListPage());
     case SearchPage.routeName:
       return CupertinoPageRoute(builder: (_) => const SearchPage());
     case WatchlistMoviesPage.routeName:
