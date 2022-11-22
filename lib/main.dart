@@ -59,45 +59,47 @@ class MyApp extends StatelessWidget {
         ),
         home: const HomeMoviePage(),
         navigatorObservers: [routeObserver],
-        onGenerateRoute: (RouteSettings settings) {
-          switch (settings.name) {
-            case '/home':
-              return MaterialPageRoute(builder: (_) => const HomeMoviePage());
-            case PopularMoviesPage.routeName:
-              return CupertinoPageRoute(
-                builder: (_) => const PopularMoviesPage(),
-              );
-            case TopRatedMoviesPage.routeName:
-              return CupertinoPageRoute(
-                builder: (_) => const TopRatedMoviesPage(),
-              );
-            case MovieDetailPage.routeName:
-              final id = settings.arguments as int;
-              return MaterialPageRoute(
-                builder: (_) => MovieDetailPage(id: id),
-                settings: settings,
-              );
-            case SearchPage.routeName:
-              return CupertinoPageRoute(builder: (_) => const SearchPage());
-            case WatchlistMoviesPage.routeName:
-              return MaterialPageRoute(
-                builder: (_) => const WatchlistMoviesPage(),
-              );
-            case AboutPage.routeName:
-              return MaterialPageRoute(builder: (_) => const AboutPage());
-            default:
-              return MaterialPageRoute(
-                builder: (_) {
-                  return const Scaffold(
-                    body: Center(
-                      child: Text('Page not found :('),
-                    ),
-                  );
-                },
-              );
-          }
-        },
+        onGenerateRoute: (RouteSettings settings) => appGenerateRoute(settings),
       ),
     );
+  }
+}
+
+Route<dynamic>? appGenerateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case '/home':
+      return MaterialPageRoute(builder: (_) => const HomeMoviePage());
+    case PopularMoviesPage.routeName:
+      return CupertinoPageRoute(
+        builder: (_) => const PopularMoviesPage(),
+      );
+    case TopRatedMoviesPage.routeName:
+      return CupertinoPageRoute(
+        builder: (_) => const TopRatedMoviesPage(),
+      );
+    case MovieDetailPage.routeName:
+      final id = settings.arguments as int;
+      return MaterialPageRoute(
+        builder: (_) => MovieDetailPage(id: id),
+        settings: settings,
+      );
+    case SearchPage.routeName:
+      return CupertinoPageRoute(builder: (_) => const SearchPage());
+    case WatchlistMoviesPage.routeName:
+      return MaterialPageRoute(
+        builder: (_) => const WatchlistMoviesPage(),
+      );
+    case AboutPage.routeName:
+      return MaterialPageRoute(builder: (_) => const AboutPage());
+    default:
+      return MaterialPageRoute(
+        builder: (_) {
+          return const Scaffold(
+            body: Center(
+              child: Text('Page not found :('),
+            ),
+          );
+        },
+      );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:ditonton/common/state_enum.dart';
+import 'package:ditonton/domain/entities/movie.dart';
+import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,52 @@ void main() {
       await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
       expect(textFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Should display Error message when failed to load recommendation',
+    (WidgetTester tester) async {
+      const testMovieDetail = MovieDetail(
+        adult: false,
+        backdropPath: 'backdropPath',
+        genres: [],
+        id: 1,
+        originalTitle: 'originalTitle',
+        overview: 'overview',
+        posterPath: 'posterPath',
+        releaseDate: 'releaseDate',
+        runtime: 30,
+        title: 'title',
+        voteAverage: 1,
+        voteCount: 1,
+      );
+
+      when(mockNotifier.movieState).thenReturn(RequestState.loaded);
+      when(mockNotifier.movie).thenReturn(testMovieDetail);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.error);
+      when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+      when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+      when(mockNotifier.message).thenReturn('Error message');
+
+      final textFinder = find.text('Error message');
+
+      await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+
+      expect(textFinder, findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'Should display empty container when recommendation state is empty',
+    (WidgetTester tester) async {
+      when(mockNotifier.movieState).thenReturn(RequestState.loaded);
+      when(mockNotifier.movie).thenReturn(testMovieDetail);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.empty);
+      when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+      when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+
+      await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
     },
   );
 

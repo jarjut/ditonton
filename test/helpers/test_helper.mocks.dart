@@ -691,6 +691,11 @@ class MockDatabaseHelper extends _i1.Mock implements _i22.DatabaseHelper {
   }
 
   @override
+  bool get isTest => (super.noSuchMethod(
+        Invocation.getter(#isTest),
+        returnValue: false,
+      ) as bool);
+  @override
   _i7.Future<_i23.Database?> get database => (super.noSuchMethod(
         Invocation.getter(#database),
         returnValue: _i7.Future<_i23.Database?>.value(),
