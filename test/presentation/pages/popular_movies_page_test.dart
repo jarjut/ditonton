@@ -1,5 +1,4 @@
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import '../../dummy_data/dummy_objects.dart';
+import '../../helpers/material_app.dart';
 import 'popular_movies_page_test.mocks.dart';
 
 @GenerateMocks([PopularMoviesNotifier])
@@ -21,9 +22,7 @@ void main() {
   Widget makeTestableWidget(Widget body) {
     return ChangeNotifierProvider<PopularMoviesNotifier>.value(
       value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
+      child: setMaterialApp(home: body),
     );
   }
 
@@ -43,7 +42,7 @@ void main() {
   testWidgets('Page should display ListView when data is loaded',
       (WidgetTester tester) async {
     when(mockNotifier.state).thenReturn(RequestState.loaded);
-    when(mockNotifier.movies).thenReturn(<Movie>[]);
+    when(mockNotifier.movies).thenReturn(testMovieList);
 
     final listViewFinder = find.byType(ListView);
 

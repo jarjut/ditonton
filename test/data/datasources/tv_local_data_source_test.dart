@@ -97,6 +97,17 @@ void main() {
         // assert
         expect(result, [testTvSeriesTable]);
       });
+
+      test(
+          'should throw DatabaseException when get data from database is failed',
+          () async {
+        // arrange
+        when(mockDatabaseHelper.getWatchlistTv()).thenThrow(Exception());
+        // act
+        final call = dataSource.getWatchlistTvSeries();
+        // assert
+        expect(() => call, throwsA(isA<DatabaseException>()));
+      });
     });
   });
 }

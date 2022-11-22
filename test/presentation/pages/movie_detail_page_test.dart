@@ -1,5 +1,4 @@
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
 import '../../dummy_data/dummy_objects.dart';
+import '../../helpers/material_app.dart';
 import 'movie_detail_page_test.mocks.dart';
 
 @GenerateMocks([MovieDetailNotifier])
@@ -22,11 +22,23 @@ void main() {
   Widget makeTestableWidget(Widget body) {
     return ChangeNotifierProvider<MovieDetailNotifier>.value(
       value: mockNotifier,
-      child: MaterialApp(
-        home: body,
-      ),
+      child: setMaterialApp(home: body),
     );
   }
+
+  testWidgets(
+    'Should display Error Message when failed to load data',
+    (WidgetTester tester) async {
+      when(mockNotifier.movieState).thenReturn(RequestState.error);
+      when(mockNotifier.message).thenReturn('Error message');
+
+      final textFinder = find.text('Error message');
+
+      await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+
+      expect(textFinder, findsOneWidget);
+    },
+  );
 
   testWidgets(
       'Watchlist button should display add icon when movie not added to watchlist',
@@ -34,7 +46,7 @@ void main() {
     when(mockNotifier.movieState).thenReturn(RequestState.loaded);
     when(mockNotifier.movie).thenReturn(testMovieDetail);
     when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+    when(mockNotifier.movieRecommendations).thenReturn(testMovieList);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
@@ -50,7 +62,7 @@ void main() {
     when(mockNotifier.movieState).thenReturn(RequestState.loaded);
     when(mockNotifier.movie).thenReturn(testMovieDetail);
     when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+    when(mockNotifier.movieRecommendations).thenReturn(testMovieList);
     when(mockNotifier.isAddedToWatchlist).thenReturn(true);
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
@@ -66,7 +78,7 @@ void main() {
     when(mockNotifier.movieState).thenReturn(RequestState.loaded);
     when(mockNotifier.movie).thenReturn(testMovieDetail);
     when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+    when(mockNotifier.movieRecommendations).thenReturn(testMovieList);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
     when(mockNotifier.watchlistMessage).thenReturn('Added to Watchlist');
 
@@ -89,7 +101,7 @@ void main() {
     when(mockNotifier.movieState).thenReturn(RequestState.loaded);
     when(mockNotifier.movie).thenReturn(testMovieDetail);
     when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
+    when(mockNotifier.movieRecommendations).thenReturn(testMovieList);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
 
@@ -104,5 +116,28 @@ void main() {
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Failed'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Watchlist button should display Snackbar when removed from watchlist',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.loaded);
+    when(mockNotifier.movie).thenReturn(testMovieDetail);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(testMovieList);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
+    when(mockNotifier.watchlistMessage).thenReturn('Removed from Watchlist');
+
+    final watchlistButton = find.byType(ElevatedButton);
+
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
+
+    expect(find.byIcon(Icons.check), findsOneWidget);
+
+    await tester.tap(watchlistButton);
+    await tester.pump();
+
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text('Removed from Watchlist'), findsOneWidget);
   });
 }

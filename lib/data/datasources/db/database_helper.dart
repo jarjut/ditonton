@@ -5,14 +5,11 @@ import 'package:ditonton/data/models/tv_series_table.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
-  static DatabaseHelper? _databaseHelper;
-  DatabaseHelper._instance() {
-    _databaseHelper = this;
-  }
+  final bool isTest;
 
-  factory DatabaseHelper() => _databaseHelper ?? DatabaseHelper._instance();
+  DatabaseHelper({this.isTest = false});
 
-  static Database? _database;
+  Database? _database;
 
   Future<Database?> get database async {
     _database ??= await _initDb();
@@ -26,7 +23,11 @@ class DatabaseHelper {
     final path = await getDatabasesPath();
     final databasePath = '$path/ditonton.db';
 
-    var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(
+      isTest ? inMemoryDatabasePath : databasePath,
+      version: 1,
+      onCreate: _onCreate,
+    );
     return db;
   }
 
