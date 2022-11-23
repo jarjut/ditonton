@@ -396,5 +396,57 @@ void main() {
         );
       });
     });
+
+    group('get season episodes', () {
+      const tId = 1;
+      const tSeasonNumber = 1;
+
+      test('should return data (episode list) when the call is successful',
+          () async {
+        // arrange
+        when(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber))
+            .thenAnswer((_) async => testEpisodeModelList);
+        // act
+        final result = await repository.getSeasonEpisodes(tId, tSeasonNumber);
+        // assert
+        verify(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber));
+        /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
+        final resultList = result.getOrElse(() => []);
+        expect(resultList, equals(testEpisodeList));
+      });
+
+      test(
+          'should return server failure when call to remote data source is unsuccessful',
+          () async {
+        // arrange
+        when(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber))
+            .thenThrow(ServerException());
+        // act
+        final result = await repository.getSeasonEpisodes(tId, tSeasonNumber);
+        // assertbuild runner
+        verify(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber));
+        expect(result, equals(const Left(ServerFailure(''))));
+      });
+
+      test(
+          'should return connection failure when the device is not connected to the internet',
+          () async {
+        // arrange
+        when(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber))
+            .thenThrow(
+          const SocketException('Failed to connect to the network'),
+        );
+        // act
+        final result = await repository.getSeasonEpisodes(tId, tSeasonNumber);
+        // assert
+        verify(mockRemoteDataSource.getSeasonEpisodes(tId, tSeasonNumber));
+        expect(
+          result,
+          equals(
+            const Left(ConnectionFailure('Failed to connect to the network')),
+          ),
+        );
+      });
+    });
   });
 }

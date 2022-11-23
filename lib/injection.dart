@@ -19,6 +19,7 @@ import 'package:ditonton/domain/usecases/movie/save_watchlist.dart';
 import 'package:ditonton/domain/usecases/movie/search_movies.dart';
 import 'package:ditonton/domain/usecases/tvseries/get_now_playing_tv_series.dart';
 import 'package:ditonton/domain/usecases/tvseries/get_popular_tv_series.dart';
+import 'package:ditonton/domain/usecases/tvseries/get_season_episodes.dart';
 import 'package:ditonton/domain/usecases/tvseries/get_top_rated_tv_series.dart';
 import 'package:ditonton/domain/usecases/tvseries/get_tv_detail.dart';
 import 'package:ditonton/domain/usecases/tvseries/get_tv_recommendations.dart';
@@ -31,7 +32,9 @@ import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/season_episodes_notifier.dart';
 import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/tv_series_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
 import 'package:get_it/get_it.dart';
@@ -84,6 +87,20 @@ void init() {
       getTopRatedTvSeries: locator(),
     ),
   );
+  locator.registerFactory(
+    () => TvSeriesDetailNotifier(
+      getTvDetail: locator(),
+      getTvRecommendations: locator(),
+      getWatchListStatusTv: locator(),
+      saveWatchlistTv: locator(),
+      removeWatchlistTv: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => SeasonEpisodesNotifier(
+      getSeasonEpisodes: locator(),
+    ),
+  );
 
   // use case
   // movie
@@ -108,6 +125,7 @@ void init() {
   locator.registerLazySingleton(() => RemoveWatchlistTv(locator()));
   locator.registerLazySingleton(() => SaveWatchlistTv(locator()));
   locator.registerLazySingleton(() => SearchTvSeries(locator()));
+  locator.registerLazySingleton(() => GetSeasonEpisodes(locator()));
 
   // repository
   locator.registerLazySingleton<MovieRepository>(

@@ -1,8 +1,10 @@
+import 'package:ditonton/data/models/episode_model.dart';
 import 'package:ditonton/data/models/movie_table.dart';
 import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/data/models/tv_series_detail_model.dart';
 import 'package:ditonton/data/models/tv_series_model.dart';
 import 'package:ditonton/data/models/tv_series_table.dart';
+import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
@@ -192,6 +194,36 @@ final testTvSeriedDetail = TvSeriesDetail(
   tagline: "A classic coming of rage story.",
   type: "Scripted",
 );
+
+final testEpisode = Episode(
+  id: 1,
+  airDate: DateTime(2021, 11, 6),
+  episodeNumber: 1,
+  name: 'Episode 1',
+  overview: 'Overview',
+  productionCode: "",
+  seasonNumber: 1,
+  showId: 1,
+  voteAverage: 8.5,
+  voteCount: 123,
+);
+
+final testEpisodeList = [testEpisode];
+
+final testEpisodeModel = EpisodeModel(
+  id: 1,
+  airDate: DateTime(2021, 11, 6),
+  episodeNumber: 1,
+  name: 'Episode 1',
+  overview: 'Overview',
+  productionCode: "",
+  seasonNumber: 1,
+  showId: 1,
+  voteAverage: 8.5,
+  voteCount: 123,
+);
+
+final testEpisodeModelList = [testEpisodeModel];
 
 const testWatchlistTvSeries = TvSeries.watchlist(
   id: 1,

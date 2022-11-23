@@ -25,28 +25,32 @@ class DatabaseHelper {
 
     var db = await openDatabase(
       isTest ? inMemoryDatabasePath : databasePath,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
     );
     return db;
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE  $_tblWatchlist (
+    final batch = db.batch();
+    db.execute('''
+      CREATE TABLE $_tblWatchlist (
         id INTEGER PRIMARY KEY,
         title TEXT,
         overview TEXT,
         posterPath TEXT
       );
-
-      CREATE TABLE  $_tblTvWatchlist (
+    ''');
+    db.execute('''
+      CREATE TABLE $_tblTvWatchlist (
         id INTEGER PRIMARY KEY,
         name TEXT,
         overview TEXT,
         posterPath TEXT
       );
     ''');
+
+    await batch.commit();
   }
 
   // Movie Watchlist
