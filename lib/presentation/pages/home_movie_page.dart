@@ -54,9 +54,12 @@ class _HomeMoviePageState extends State<HomeMoviePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Now Playing',
-                style: kHeading6,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  'Now Playing',
+                  style: kHeading6,
+                ),
               ),
               Consumer<MovieListNotifier>(
                 builder: (context, data, child) {

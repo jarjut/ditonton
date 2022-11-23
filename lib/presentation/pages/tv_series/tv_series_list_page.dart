@@ -2,6 +2,8 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
+import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/tv_series/popular_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_series_detail_page.dart';
 import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/widgets/app_drawer.dart';
@@ -52,9 +54,12 @@ class _TvSeriesListPageState extends State<TvSeriesListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SubHeading(
-                title: 'Now Playing',
-                onTap: () {},
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  'Now Playing',
+                  style: kHeading6,
+                ),
               ),
               Consumer<TvSeriesListNotifier>(
                 builder: (context, data, child) {
@@ -72,7 +77,8 @@ class _TvSeriesListPageState extends State<TvSeriesListPage> {
               ),
               SubHeading(
                 title: 'Popular',
-                onTap: () {},
+                onTap: () =>
+                    Navigator.pushNamed(context, PopularTvSeriesPage.routeName),
               ),
               Consumer<TvSeriesListNotifier>(
                 builder: (context, data, child) {
@@ -90,7 +96,8 @@ class _TvSeriesListPageState extends State<TvSeriesListPage> {
               ),
               SubHeading(
                 title: 'Top Rated',
-                onTap: () {},
+                onTap: () =>
+                    Navigator.pushNamed(context, TopRatedMoviesPage.routeName),
               ),
               Consumer<TvSeriesListNotifier>(
                 builder: (context, data, child) {

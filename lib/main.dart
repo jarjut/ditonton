@@ -7,7 +7,9 @@ import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/pages/search_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/tv_series/popular_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/season_episodes_page.dart';
+import 'package:ditonton/presentation/pages/tv_series/top_rated_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_series_detail_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_series_list_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
@@ -15,8 +17,10 @@ import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/popular_tv_series_notifier.dart';
 import 'package:ditonton/presentation/provider/season_episodes_notifier.dart';
 import 'package:ditonton/presentation/provider/top_rated_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/top_rated_tv_series_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
@@ -61,6 +65,12 @@ class MyApp extends StatelessWidget {
           create: (_) => di.locator<TvSeriesDetailNotifier>(),
         ),
         ChangeNotifierProvider(
+          create: (_) => di.locator<PopularTvSeriesNotifier>(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => di.locator<TopRatedTvSeriesNotifier>(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => di.locator<SeasonEpisodesNotifier>(),
         ),
       ],
@@ -100,6 +110,14 @@ Route<dynamic>? appGenerateRoute(RouteSettings settings) {
       );
     case TvSeriesListPage.routeName:
       return MaterialPageRoute(builder: (_) => const TvSeriesListPage());
+    case PopularTvSeriesPage.routeName:
+      return CupertinoPageRoute(
+        builder: (_) => const PopularTvSeriesPage(),
+      );
+    case TopRatedTvSeriesPage.routeName:
+      return CupertinoPageRoute(
+        builder: (_) => const TopRatedTvSeriesPage(),
+      );
     case TvSeriesDetailPage.routeName:
       final id = settings.arguments as int;
       return MaterialPageRoute(
