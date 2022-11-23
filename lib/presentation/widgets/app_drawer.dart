@@ -1,5 +1,5 @@
 import 'package:ditonton/presentation/pages/about_page.dart';
-import 'package:ditonton/presentation/pages/home_movie_page.dart';
+import 'package:ditonton/presentation/pages/movies/movie_list_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_series_list_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.movie),
             title: const Text('Movies'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, HomeMoviePage.routeName);
+              Navigator.pushReplacementNamed(context, MovieListPage.routeName);
             },
           ),
           ListTile(

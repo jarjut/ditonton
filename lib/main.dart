@@ -2,11 +2,11 @@ import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/injection.dart' as di;
 import 'package:ditonton/presentation/pages/about_page.dart';
-import 'package:ditonton/presentation/pages/home_movie_page.dart';
-import 'package:ditonton/presentation/pages/movie_detail_page.dart';
-import 'package:ditonton/presentation/pages/popular_movies_page.dart';
-import 'package:ditonton/presentation/pages/search_page.dart';
-import 'package:ditonton/presentation/pages/top_rated_movies_page.dart';
+import 'package:ditonton/presentation/pages/movies/movie_detail_page.dart';
+import 'package:ditonton/presentation/pages/movies/movie_list_page.dart';
+import 'package:ditonton/presentation/pages/movies/popular_movies_page.dart';
+import 'package:ditonton/presentation/pages/movies/search_page.dart';
+import 'package:ditonton/presentation/pages/movies/top_rated_movies_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/popular_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/search_tv_series_page.dart';
 import 'package:ditonton/presentation/pages/tv_series/season_episodes_page.dart';
@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: const HomeMoviePage(),
+        home: const MovieListPage(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) => appGenerateRoute(settings),
       ),
@@ -97,8 +97,8 @@ class MyApp extends StatelessWidget {
 
 Route<dynamic>? appGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case HomeMoviePage.routeName:
-      return MaterialPageRoute(builder: (_) => const HomeMoviePage());
+    case MovieListPage.routeName:
+      return MaterialPageRoute(builder: (_) => const MovieListPage());
     case PopularMoviesPage.routeName:
       return CupertinoPageRoute(
         builder: (_) => const PopularMoviesPage(),
