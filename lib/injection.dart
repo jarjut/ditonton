@@ -31,6 +31,8 @@ import 'package:ditonton/domain/usecases/tvseries/search_tv_series.dart';
 import 'package:ditonton/presentation/provider/movie_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_list_notifier.dart';
 import 'package:ditonton/presentation/provider/movie_search_notifier.dart';
+import 'package:ditonton/presentation/provider/now_playing_movies_notifier.dart';
+import 'package:ditonton/presentation/provider/now_playing_tv_series_notifier.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
 import 'package:ditonton/presentation/provider/popular_tv_series_notifier.dart';
 import 'package:ditonton/presentation/provider/season_episodes_notifier.dart';
@@ -65,24 +67,19 @@ void init() {
     ),
   );
   locator.registerFactory(
-    () => MovieSearchNotifier(
-      searchMovies: locator(),
-    ),
+    () => MovieSearchNotifier(searchMovies: locator()),
   );
   locator.registerFactory(
-    () => PopularMoviesNotifier(
-      locator(),
-    ),
+    () => NowPlayingMoviesNotifier(locator()),
   );
   locator.registerFactory(
-    () => TopRatedMoviesNotifier(
-      getTopRatedMovies: locator(),
-    ),
+    () => PopularMoviesNotifier(locator()),
   );
   locator.registerFactory(
-    () => WatchlistMovieNotifier(
-      getWatchlistMovies: locator(),
-    ),
+    () => TopRatedMoviesNotifier(getTopRatedMovies: locator()),
+  );
+  locator.registerFactory(
+    () => WatchlistMovieNotifier(getWatchlistMovies: locator()),
   );
   locator.registerFactory(
     () => TvSeriesListNotifier(
@@ -104,24 +101,19 @@ void init() {
     () => TvSeriesSearchNotifier(searchTvSeries: locator()),
   );
   locator.registerFactory(
-    () => PopularTvSeriesNotifier(
-      locator(),
-    ),
+    () => NowPlayingTvSeriesNotifier(locator()),
   );
   locator.registerFactory(
-    () => TopRatedTvSeriesNotifier(
-      locator(),
-    ),
+    () => PopularTvSeriesNotifier(locator()),
   );
   locator.registerFactory(
-    () => SeasonEpisodesNotifier(
-      getSeasonEpisodes: locator(),
-    ),
+    () => TopRatedTvSeriesNotifier(locator()),
   );
   locator.registerFactory(
-    () => WatchlistTvSeriesNotifier(
-      getWatchlistTvSeries: locator(),
-    ),
+    () => SeasonEpisodesNotifier(getSeasonEpisodes: locator()),
+  );
+  locator.registerFactory(
+    () => WatchlistTvSeriesNotifier(getWatchlistTvSeries: locator()),
   );
 
   // use case
