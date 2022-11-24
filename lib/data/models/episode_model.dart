@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 
 class EpisodeModel extends Equatable {
   final int id;
-  final DateTime airDate;
+  final DateTime? airDate;
   final int episodeNumber;
   final String name;
   final String overview;
@@ -16,7 +16,7 @@ class EpisodeModel extends Equatable {
 
   const EpisodeModel({
     required this.id,
-    required this.airDate,
+    this.airDate,
     required this.episodeNumber,
     required this.name,
     required this.overview,
@@ -30,7 +30,8 @@ class EpisodeModel extends Equatable {
 
   factory EpisodeModel.fromJson(Map<String, dynamic> json) => EpisodeModel(
         id: json["id"],
-        airDate: DateTime.parse(json["air_date"]),
+        airDate:
+            json["air_date"] == null ? null : DateTime.parse(json["air_date"]),
         episodeNumber: json["episode_number"],
         name: json["name"],
         overview: json["overview"],
@@ -44,7 +45,7 @@ class EpisodeModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "air_date": airDate.toIso8601String(),
+        "air_date": airDate?.toIso8601String(),
         "episode_number": episodeNumber,
         "name": name,
         "overview": overview,

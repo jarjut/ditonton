@@ -7,8 +7,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
-import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/material_app.dart';
+import '../../../dummy_data/dummy_objects.dart';
+import '../../../helpers/material_app.dart';
 import 'top_rated_movies_page_test.mocks.dart';
 
 @GenerateMocks([TopRatedMoviesNotifier])

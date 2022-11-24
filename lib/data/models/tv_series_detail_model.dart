@@ -3,6 +3,7 @@ import 'package:ditonton/data/models/genre_model.dart';
 import 'package:ditonton/data/models/season_model.dart';
 import 'package:ditonton/domain/entities/tv_series_detail.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class TvSeriesDetailModel extends Equatable {
   const TvSeriesDetailModel({
@@ -109,7 +110,7 @@ class TvSeriesDetailModel extends Equatable {
         "backdrop_path": backdropPath,
         "vote_average": voteAverage,
         "overview": overview,
-        "first_air_date": firstAirDate.toIso8601String(),
+        "first_air_date": DateFormat('yyyy-MM-dd').format(firstAirDate),
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
         "origin_country": List<dynamic>.from(originCountry.map((x) => x)),
         "original_language": originalLanguage,
@@ -121,7 +122,7 @@ class TvSeriesDetailModel extends Equatable {
         "homepage": homepage,
         "in_production": inProduction,
         "languages": List<dynamic>.from(languages.map((x) => x)),
-        "last_air_date": lastAirDate.toIso8601String(),
+        "last_air_date": DateFormat('yyyy-MM-dd').format(lastAirDate),
         "last_episode_to_air":
             lastEpisodeToAir == null ? null : lastEpisodeToAir!.toJson(),
         "next_episode_to_air":

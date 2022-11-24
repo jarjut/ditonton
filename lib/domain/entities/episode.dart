@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Episode extends Equatable {
   final int id;
-  final DateTime airDate;
+  final DateTime? airDate;
   final int episodeNumber;
   final String name;
   final String overview;
@@ -15,7 +15,7 @@ class Episode extends Equatable {
 
   const Episode({
     required this.id,
-    required this.airDate,
+    this.airDate,
     required this.episodeNumber,
     required this.name,
     required this.overview,

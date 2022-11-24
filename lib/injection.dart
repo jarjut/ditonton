@@ -40,6 +40,7 @@ import 'package:ditonton/presentation/provider/tv_series_detail_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series_list_notifier.dart';
 import 'package:ditonton/presentation/provider/tv_series_search_notifier.dart';
 import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
+import 'package:ditonton/presentation/provider/watchlist_tv_series_notifier.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -115,6 +116,11 @@ void init() {
   locator.registerFactory(
     () => SeasonEpisodesNotifier(
       getSeasonEpisodes: locator(),
+    ),
+  );
+  locator.registerFactory(
+    () => WatchlistTvSeriesNotifier(
+      getWatchlistTvSeries: locator(),
     ),
   );
 
