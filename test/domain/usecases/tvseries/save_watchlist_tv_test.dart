@@ -19,10 +19,10 @@ void main() {
     test('should save watchlist tv with message', () async {
       const tMessage = 'Added to Watchlist';
       // arrange
-      when(mockTvRepository.saveWatchlist(testTvSeriedDetail))
+      when(mockTvRepository.saveWatchlist(testTvSeriesDetail))
           .thenAnswer((_) async => const Right(tMessage));
       // act
-      final result = await usecase.execute(testTvSeriedDetail);
+      final result = await usecase.execute(testTvSeriesDetail);
       // assert
       expect(result, const Right(tMessage));
     });

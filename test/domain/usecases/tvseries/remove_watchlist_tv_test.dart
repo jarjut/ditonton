@@ -19,10 +19,10 @@ void main() {
     test('should remove watchlist tv with message', () async {
       const tMessage = 'Removed from watchlist';
       // arrange
-      when(mockTvRepository.removeWatchlist(testTvSeriedDetail))
+      when(mockTvRepository.removeWatchlist(testTvSeriesDetail))
           .thenAnswer((_) async => const Right(tMessage));
       // act
-      final result = await usecase.execute(testTvSeriedDetail);
+      final result = await usecase.execute(testTvSeriesDetail);
       // assert
       expect(result, const Right(tMessage));
     });

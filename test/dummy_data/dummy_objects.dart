@@ -150,7 +150,7 @@ final testTvSeriedDetailModel = TvSeriesDetailModel(
   type: "Scripted",
 );
 
-final testTvSeriedDetail = TvSeriesDetail(
+final testTvSeriesDetail = TvSeriesDetail(
   id: 1,
   adult: false,
   popularity: 3293.494,
