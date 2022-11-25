@@ -39,13 +39,13 @@ class TvSeriesDetailModel extends Equatable {
   final bool adult;
   final String? backdropPath;
   final List<int> episodeRunTime;
-  final DateTime firstAirDate;
+  final DateTime? firstAirDate;
   final List<GenreModel> genres;
   final String homepage;
   final int id;
   final bool inProduction;
   final List<String> languages;
-  final DateTime lastAirDate;
+  final DateTime? lastAirDate;
   final EpisodeModel? lastEpisodeToAir;
   final String name;
   final EpisodeModel? nextEpisodeToAir;
@@ -72,7 +72,10 @@ class TvSeriesDetailModel extends Equatable {
         backdropPath: json["backdrop_path"],
         voteAverage: json["vote_average"].toDouble(),
         overview: json["overview"],
-        firstAirDate: DateTime.parse(json["first_air_date"]),
+        firstAirDate:
+            json["first_air_date"] == null || json["first_air_date"] == ""
+                ? null
+                : DateTime.parse(json["first_air_date"]),
         genres: List<GenreModel>.from(
           json["genres"].map((x) => GenreModel.fromJson(x)),
         ),
@@ -86,7 +89,10 @@ class TvSeriesDetailModel extends Equatable {
         homepage: json["homepage"],
         inProduction: json["in_production"],
         languages: List<String>.from(json["languages"].map((x) => x)),
-        lastAirDate: DateTime.parse(json["last_air_date"]),
+        lastAirDate:
+            json["last_air_date"] == null || json["last_air_date"] == ""
+                ? null
+                : DateTime.parse(json["last_air_date"]),
         lastEpisodeToAir: json["last_episode_to_air"] == null
             ? null
             : EpisodeModel.fromJson(json["last_episode_to_air"]),
@@ -110,7 +116,9 @@ class TvSeriesDetailModel extends Equatable {
         "backdrop_path": backdropPath,
         "vote_average": voteAverage,
         "overview": overview,
-        "first_air_date": DateFormat('yyyy-MM-dd').format(firstAirDate),
+        "first_air_date": firstAirDate == null
+            ? null
+            : DateFormat('yyyy-MM-dd').format(firstAirDate!),
         "genres": List<dynamic>.from(genres.map((x) => x.toJson())),
         "origin_country": List<dynamic>.from(originCountry.map((x) => x)),
         "original_language": originalLanguage,
@@ -122,7 +130,9 @@ class TvSeriesDetailModel extends Equatable {
         "homepage": homepage,
         "in_production": inProduction,
         "languages": List<dynamic>.from(languages.map((x) => x)),
-        "last_air_date": DateFormat('yyyy-MM-dd').format(lastAirDate),
+        "last_air_date": lastAirDate == null
+            ? null
+            : DateFormat('yyyy-MM-dd').format(lastAirDate!),
         "last_episode_to_air":
             lastEpisodeToAir == null ? null : lastEpisodeToAir!.toJson(),
         "next_episode_to_air":

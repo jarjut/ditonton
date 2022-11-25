@@ -11,7 +11,7 @@ class TvSeriesDetail extends Equatable {
     this.backdropPath,
     required this.voteAverage,
     required this.overview,
-    required this.firstAirDate,
+    this.firstAirDate,
     this.genres = const [],
     required this.originCountry,
     required this.originalLanguage,
@@ -23,7 +23,7 @@ class TvSeriesDetail extends Equatable {
     required this.homepage,
     required this.inProduction,
     required this.languages,
-    required this.lastAirDate,
+    this.lastAirDate,
     this.lastEpisodeToAir,
     this.nextEpisodeToAir,
     required this.numberOfEpisodes,
@@ -37,13 +37,13 @@ class TvSeriesDetail extends Equatable {
   final bool adult;
   final String? backdropPath;
   final List<int> episodeRunTime;
-  final DateTime firstAirDate;
+  final DateTime? firstAirDate;
   final List<Genre> genres;
   final String homepage;
   final int id;
   final bool inProduction;
   final List<String> languages;
-  final DateTime lastAirDate;
+  final DateTime? lastAirDate;
   final Episode? lastEpisodeToAir;
   final String name;
   final Episode? nextEpisodeToAir;
