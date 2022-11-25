@@ -44,7 +44,7 @@ class TvSeriesDetailNotifier extends ChangeNotifier {
   bool _isAddedtoWatchlist = false;
   bool get isAddedToWatchlist => _isAddedtoWatchlist;
 
-  Future<void> fetchMovieDetail(int id) async {
+  Future<void> fetchTvSeriesDetail(int id) async {
     _tvSeriesState = RequestState.loading;
     notifyListeners();
     final detailResult = await getTvDetail.execute(id);
@@ -64,9 +64,9 @@ class TvSeriesDetailNotifier extends ChangeNotifier {
             _recommendationState = RequestState.error;
             _message = failure.message;
           },
-          (movies) {
+          (recommendations) {
             _recommendationState = RequestState.loaded;
-            _tvSeriesRecommendations = movies;
+            _tvSeriesRecommendations = recommendations;
           },
         );
         _tvSeriesState = RequestState.loaded;

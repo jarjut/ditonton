@@ -37,7 +37,7 @@ class TvSeriesListNotifier extends ChangeNotifier {
   final GetPopularTvSeries getPopularTvSeries;
   final GetTopRatedTvSeries getTopRatedTvSeries;
 
-  Future<void> fetchNowPlayingMovies() async {
+  Future<void> fetchNowPlayingTvSeries() async {
     _nowPlayingState = RequestState.loading;
     notifyListeners();
 
@@ -56,7 +56,7 @@ class TvSeriesListNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchPopularMovies() async {
+  Future<void> fetchPopularTvSeries() async {
     _popularState = RequestState.loading;
     notifyListeners();
 
@@ -75,7 +75,7 @@ class TvSeriesListNotifier extends ChangeNotifier {
     );
   }
 
-  Future<void> fetchTopRatedMovies() async {
+  Future<void> fetchTopRatedTvSeries() async {
     _topRatedState = RequestState.loading;
     notifyListeners();
 
