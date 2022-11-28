@@ -1,5 +1,7 @@
 import 'package:ditonton/domain/repositories/tv_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class GetWatchListStatusTv {
   final TvRepository repository;
 

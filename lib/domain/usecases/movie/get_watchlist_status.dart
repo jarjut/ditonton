@@ -1,5 +1,7 @@
 import 'package:ditonton/domain/repositories/movie_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@lazySingleton
 class GetWatchListStatus {
   final MovieRepository repository;
 

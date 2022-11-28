@@ -10,7 +10,9 @@ import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:ditonton/domain/entities/tv_series_detail.dart';
 import 'package:ditonton/domain/repositories/tv_repository.dart';
+import 'package:injectable/injectable.dart';
 
+@LazySingleton(as: TvRepository)
 class TvRepositoryImpl implements TvRepository {
   final TvRemoteDataSource remoteDataSource;
   final TvLocalDataSource localDataSource;

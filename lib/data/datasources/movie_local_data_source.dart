@@ -1,6 +1,7 @@
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/models/movie_table.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class MovieLocalDataSource {
   Future<String> insertWatchlist(MovieTable movie);
@@ -9,6 +10,7 @@ abstract class MovieLocalDataSource {
   Future<List<MovieTable>> getWatchlistMovies();
 }
 
+@LazySingleton(as: MovieLocalDataSource)
 class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   final DatabaseHelper databaseHelper;
 

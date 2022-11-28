@@ -5,6 +5,7 @@ import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
 import 'package:ditonton/data/models/movie_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies();
@@ -15,6 +16,7 @@ abstract class MovieRemoteDataSource {
   Future<List<MovieModel>> searchMovies(String query);
 }
 
+@LazySingleton(as: MovieRemoteDataSource)
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   static const apiKey = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   static const baseUrl = 'https://api.themoviedb.org/3';

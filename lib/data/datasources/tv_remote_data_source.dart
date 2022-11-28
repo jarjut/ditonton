@@ -7,6 +7,7 @@ import 'package:ditonton/data/models/tv_series_detail_model.dart';
 import 'package:ditonton/data/models/tv_series_model.dart';
 import 'package:ditonton/data/models/tv_series_response.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 
 abstract class TvRemoteDataSource {
   Future<List<TvSeriesModel>> getNowPlayingTvSeries();
@@ -18,6 +19,7 @@ abstract class TvRemoteDataSource {
   Future<List<EpisodeModel>> getSeasonEpisodes(int id, int seasonNumber);
 }
 
+@LazySingleton(as: TvRemoteDataSource)
 class TvRemoteDataSourceImpl implements TvRemoteDataSource {
   static const apiKey = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   static const baseUrl = 'https://api.themoviedb.org/3';
