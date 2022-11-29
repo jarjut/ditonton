@@ -1,52 +1,58 @@
-# a199-flutter-expert-project
+# ditonton
 
-Repository ini merupakan starter project submission kelas Flutter Expert Dicoding Indonesia.
+[![ci][ci_badge]][ci_link]
 
----
+Dicoding Academy Flutter Expert Submission Project
 
-## Tips Submission Awal
+This app is a movie catalog app that shows the list of movies and tv shows. The data is fetched from [The Movie Database](https://www.themoviedb.org/).
 
-Pastikan untuk memeriksa kembali seluruh hasil testing pada submissionmu sebelum dikirimkan. Karena kriteria pada submission ini akan diperiksa setelah seluruh berkas testing berhasil dijalankan.
+# Project Criteria
 
+## Clean Architecture
 
-## Tips Submission Akhir
+Applications divided into 3 layers:
 
-Jika kamu menerapkan modular pada project, Anda dapat memanfaatkan berkas `test.sh` pada repository ini. Berkas tersebut dapat mempermudah proses testing melalui *terminal* atau *command prompt*. Sebelumnya menjalankan berkas tersebut, ikuti beberapa langkah berikut:
-1. Install terlebih dahulu aplikasi sesuai dengan Operating System (OS) yang Anda gunakan.
-    - Bagi pengguna **Linux**, jalankan perintah berikut pada terminal.
-        ```
-        sudo apt-get update -qq -y
-        sudo apt-get install lcov -y
-        ```
-    
-    - Bagi pengguna **Mac**, jalankan perintah berikut pada terminal.
-        ```
-        brew install lcov
-        ```
-    - Bagi pengguna **Windows**, ikuti langkah berikut.
-        - Install [Chocolatey](https://chocolatey.org/install) pada komputermu.
-        - Setelah berhasil, install [lcov](https://community.chocolatey.org/packages/lcov) dengan menjalankan perintah berikut.
-            ```
-            choco install lcov
-            ```
-        - Kemudian cek **Environtment Variabel** pada kolom **System variabels** terdapat variabel GENTHTML dan LCOV_HOME. Jika tidak tersedia, Anda bisa menambahkan variabel baru dengan nilai seperti berikut.
-            | Variable | Value|
-            | ----------- | ----------- |
-            | GENTHTML | C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml |
-            | LCOV_HOME | C:\ProgramData\chocolatey\lib\lcov\tools |
-        
-2. Untuk mempermudah proses verifikasi testing, jalankan perintah berikut.
-    ```
-    git init
-    ```
-3. Kemudian jalankan berkas `test.sh` dengan perintah berikut pada *terminal* atau *powershell*.
-    ```
-    test.sh
-    ```
-    atau
-    ```
-    ./test.sh
-    ```
-    Proses ini akan men-*generate* berkas `lcov.info` dan folder `coverage` terkait dengan laporan coverage.
-4. Tunggu proses testing selesai hingga muncul web terkait laporan coverage.
+- Domain : Contains the main requirements and logic related to business needs & applications
+- Data : Contains code implementation to get data from external sources.
+- Presentation : Contains widget implementation and application display as well as state management.
 
+## Automated Testing
+
+Unit testing with a minimum testing coverage of 95%.
+
+### Running Tests
+
+To run all unit and widget tests use the following command:
+
+```sh
+$ flutter test --coverage --test-randomize-ordering-seed random
+```
+
+To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
+
+```sh
+# Generate Coverage Report
+$ genhtml coverage/lcov.info -o coverage/
+
+# Open Coverage Report
+$ open coverage/index.html
+```
+
+## Using BloC Library
+
+Migrating state management which previously used a provider to become BLoC.
+
+## Continuous Integration
+
+Using Github Actions to run unit tests and check code quality.
+
+## SSL Pinning
+
+Installing an SSL certificate on the application as an additional layer of security for accessing data from the API.
+
+## Integration with Firebase Analytics & Crashlytics
+
+Ensuring developers continue to receive feedback from users, especially regarding stability and error reports.
+
+[ci_badge]: https://github.com/jarjut/ditonton/actions/workflows/main.yaml/badge.svg
+[ci_link]: https://github.com/jarjut/ditonton/actions
