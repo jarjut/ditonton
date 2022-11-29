@@ -89,10 +89,10 @@ import 'package:injectable/injectable.dart' as _i2;
 /// ignore_for_file: lines_longer_than_80_chars
 extension GetItInjectableX on _i1.GetIt {
   /// initializes the registration of main-scope dependencies inside of [GetIt]
-  _i1.GetIt init({
+  Future<_i1.GetIt> init({
     String? environment,
     _i2.EnvironmentFilter? environmentFilter,
-  }) {
+  }) async {
     final gh = _i2.GetItHelper(
       this,
       environment,
@@ -130,7 +130,10 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i18.GetMovieDetail(gh<_i4.MovieRepository>()));
     gh.lazySingleton<_i19.GetMovieRecommendations>(
         () => _i19.GetMovieRecommendations(gh<_i4.MovieRepository>()));
-    gh.lazySingleton<_i8.Client>(() => registerModule.client);
+    await gh.factoryAsync<_i8.Client>(
+      () => registerModule.client,
+      preResolve: true,
+    );
     gh.lazySingleton<_i20.GetNowPlayingTvSeries>(
         () => _i20.GetNowPlayingTvSeries(gh<_i16.TvRepository>()));
     gh.lazySingleton<_i21.GetPopularMovies>(
