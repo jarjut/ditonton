@@ -34,6 +34,35 @@ class TvSeriesDetail extends Equatable {
     required this.type,
   });
 
+  const TvSeriesDetail.empty()
+      : adult = false,
+        backdropPath = null,
+        episodeRunTime = const [],
+        firstAirDate = null,
+        genres = const [],
+        homepage = '',
+        id = 0,
+        inProduction = false,
+        languages = const [],
+        lastAirDate = null,
+        lastEpisodeToAir = null,
+        name = '',
+        nextEpisodeToAir = null,
+        numberOfEpisodes = 0,
+        numberOfSeasons = 0,
+        originCountry = const [],
+        originalLanguage = '',
+        originalName = '',
+        overview = '',
+        popularity = 0,
+        posterPath = null,
+        seasons = const [],
+        status = '',
+        tagline = '',
+        type = '',
+        voteAverage = 0,
+        voteCount = 0;
+
   final bool adult;
   final String? backdropPath;
   final List<int> episodeRunTime;

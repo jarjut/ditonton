@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ditonton/common/constants.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/season.dart';
 import 'package:ditonton/domain/entities/tv_series_detail.dart';
-import 'package:ditonton/presentation/provider/season_episodes_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_series/season_episodes/season_episodes_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeasonEpisodesArgument {
   final TvSeriesDetail tvSeriesDetail;
@@ -38,8 +37,7 @@ class _SeasonEpisodesPageState extends State<SeasonEpisodesPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      Provider.of<SeasonEpisodesNotifier>(context, listen: false)
-          .fetchSeasonEpisodes(
+      BlocProvider.of<SeasonEpisodesCubit>(context).fetchSeasonEpisodes(
         widget.tvSeriesDetail.id,
         widget.season.seasonNumber,
       );
@@ -54,26 +52,26 @@ class _SeasonEpisodesPageState extends State<SeasonEpisodesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: Consumer<SeasonEpisodesNotifier>(
-          builder: (context, provider, child) {
-            if (provider.episodeListState == RequestState.loading) {
+        child: BlocBuilder<SeasonEpisodesCubit, SeasonEpisodesState>(
+          builder: (context, state) {
+            if (state is SeasonEpisodesLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (provider.episodeListState == RequestState.error) {
+            } else if (state is SeasonEpisodesError) {
               return Center(
-                child: Text(provider.message),
+                child: Text(state.message),
               );
-            } else {
-              if (provider.episodeList.isEmpty) {
+            } else if (state is SeasonEpisodesLoaded) {
+              if (state.episodes.isEmpty) {
                 return const Center(
                   child: Text('No episode found'),
                 );
               } else {
                 return ListView.builder(
-                  itemCount: provider.episodeList.length,
+                  itemCount: state.episodes.length,
                   itemBuilder: (context, index) {
-                    final episode = provider.episodeList[index];
+                    final episode = state.episodes[index];
                     return Container(
                       margin: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -121,6 +119,8 @@ class _SeasonEpisodesPageState extends State<SeasonEpisodesPage> {
                 );
               }
             }
+
+            return Container();
           },
         ),
       ),

@@ -1,14 +1,13 @@
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/common/utils.dart';
+import 'package:ditonton/presentation/bloc/watchlist/watchlist_movie/watchlist_movie_cubit.dart';
+import 'package:ditonton/presentation/bloc/watchlist/watchlist_tv_series/watchlist_tv_series_cubit.dart';
 import 'package:ditonton/presentation/pages/watchlist/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/pages/watchlist/watchlist_tv_series_page.dart';
-import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
-import 'package:ditonton/presentation/provider/watchlist_tv_series_notifier.dart';
 import 'package:ditonton/presentation/widgets/movie_list.dart';
 import 'package:ditonton/presentation/widgets/sub_heading.dart';
 import 'package:ditonton/presentation/widgets/tv_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WatchlistPage extends StatefulWidget {
   static const routeName = '/watchlist';
@@ -25,9 +24,8 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
     super.initState();
     Future.microtask(
       () {
-        Provider.of<WatchlistMovieNotifier>(context, listen: false)
-            .fetchWatchlistMovies();
-        Provider.of<WatchlistTvSeriesNotifier>(context, listen: false)
+        BlocProvider.of<WatchlistMovieCubit>(context).fetchWatchlistMovies();
+        BlocProvider.of<WatchlistTvSeriesCubit>(context)
             .fetchWatchlistTvSeries();
       },
     );
@@ -41,10 +39,8 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
 
   @override
   void didPopNext() {
-    Provider.of<WatchlistMovieNotifier>(context, listen: false)
-        .fetchWatchlistMovies();
-    Provider.of<WatchlistTvSeriesNotifier>(context, listen: false)
-        .fetchWatchlistTvSeries();
+    BlocProvider.of<WatchlistMovieCubit>(context).fetchWatchlistMovies();
+    BlocProvider.of<WatchlistTvSeriesCubit>(context).fetchWatchlistTvSeries();
   }
 
   @override
@@ -59,14 +55,14 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Consumer<WatchlistMovieNotifier>(
-                builder: (context, data, child) {
-                  if (data.watchlistState == RequestState.loading) {
+              BlocBuilder<WatchlistMovieCubit, WatchlistMovieState>(
+                builder: (context, state) {
+                  if (state is WatchlistMovieLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.watchlistState == RequestState.loaded) {
-                    if (data.watchlistMovies.isNotEmpty) {
+                  } else if (state is WatchlistMovieLoaded) {
+                    if (state.movies.isNotEmpty) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -77,27 +73,29 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
                               WatchlistMoviesPage.routeName,
                             ),
                           ),
-                          MovieList(data.watchlistMovies)
+                          MovieList(state.movies)
                         ],
                       );
                     }
                     return const SizedBox.shrink();
-                  } else {
+                  } else if (state is WatchlistMovieError) {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.message),
                     );
+                  } else {
+                    return const SizedBox.shrink();
                   }
                 },
               ),
-              Consumer<WatchlistTvSeriesNotifier>(
-                builder: (context, data, child) {
-                  if (data.watchlistState == RequestState.loading) {
+              BlocBuilder<WatchlistTvSeriesCubit, WatchlistTvSeriesState>(
+                builder: (context, state) {
+                  if (state is WatchlistTvSeriesLoading) {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
-                  } else if (data.watchlistState == RequestState.loaded) {
-                    if (data.watchlistTvSeries.isNotEmpty) {
+                  } else if (state is WatchlistTvSeriesLoaded) {
+                    if (state.tvSeries.isNotEmpty) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -108,16 +106,18 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
                               WatchlistTvSeriesPage.routeName,
                             ),
                           ),
-                          TvList(data.watchlistTvSeries)
+                          TvList(state.tvSeries)
                         ],
                       );
                     }
                     return const SizedBox.shrink();
-                  } else {
+                  } else if (state is WatchlistTvSeriesError) {
                     return Center(
                       key: const Key('error_message'),
-                      child: Text(data.message),
+                      child: Text(state.message),
                     );
+                  } else {
+                    return const SizedBox.shrink();
                   }
                 },
               ),

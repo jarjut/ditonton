@@ -1,37 +1,62 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/tv_series.dart';
+import 'package:ditonton/presentation/bloc/tv_series/tv_series_detail/tv_series_detail_cubit.dart';
+import 'package:ditonton/presentation/bloc/tv_series/tv_series_recommendation/tv_series_recommendation_cubit.dart';
 import 'package:ditonton/presentation/pages/tv_series/tv_series_detail_page.dart';
-import 'package:ditonton/presentation/provider/tv_series_detail_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
 import '../../../helpers/material_app.dart';
-import 'tv_series_detail_page_test.mocks.dart';
 
-@GenerateMocks([TvSeriesDetailNotifier])
+class MockTvSeriesDetailCubit extends MockCubit<TvSeriesDetailState>
+    implements TvSeriesDetailCubit {}
+
+class MockTvSeriesRecommendationCubit
+    extends MockCubit<TvSeriesRecommendationState>
+    implements TvSeriesRecommendationCubit {}
+
 void main() {
-  late MockTvSeriesDetailNotifier mockNotifier;
+  late TvSeriesDetailCubit mockDetailCubit;
+  late TvSeriesRecommendationCubit mockRecommendationCubit;
 
   setUp(() {
-    mockNotifier = MockTvSeriesDetailNotifier();
+    mockDetailCubit = MockTvSeriesDetailCubit();
+    mockRecommendationCubit = MockTvSeriesRecommendationCubit();
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TvSeriesDetailNotifier>.value(
-      value: mockNotifier,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: mockDetailCubit),
+        BlocProvider.value(value: mockRecommendationCubit),
+      ],
       child: setMaterialApp(home: body),
     );
+  }
+
+  void fakeCubitCall() {
+    when(() => mockDetailCubit.fetchTvDetail(1)).thenAnswer((_) async {});
+    when(() => mockRecommendationCubit.fetchTvSeriesRecommendation(1))
+        .thenAnswer((_) async {});
+    when(() => mockDetailCubit.addWatchlist(testTvSeriesDetail))
+        .thenAnswer((_) async {});
+    when(() => mockDetailCubit.removeFromWatchlist(testTvSeriesDetail))
+        .thenAnswer((_) async {});
   }
 
   testWidgets(
     'Should display Error Message when failed to load data',
     (WidgetTester tester) async {
-      when(mockNotifier.tvSeriesState).thenReturn(RequestState.error);
-      when(mockNotifier.message).thenReturn('Error message');
+      fakeCubitCall();
+      when(() => mockDetailCubit.state).thenReturn(
+        const TvSeriesDetailState(
+          state: RequestState.error,
+          errorMessage: 'Error message',
+        ),
+      );
 
       final textFinder = find.text('Error message');
 
@@ -45,12 +70,16 @@ void main() {
   testWidgets(
     'Should display Error message when failed to load recommendation',
     (WidgetTester tester) async {
-      when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-      when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-      when(mockNotifier.recommendationState).thenReturn(RequestState.error);
-      when(mockNotifier.tvSeriesRecommendations).thenReturn(<TvSeries>[]);
-      when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-      when(mockNotifier.message).thenReturn('Error message');
+      fakeCubitCall();
+      when(() => mockDetailCubit.state).thenReturn(
+        TvSeriesDetailState(
+          state: RequestState.loaded,
+          tvSeriesDetail: testTvSeriesDetail,
+        ),
+      );
+      when(() => mockRecommendationCubit.state).thenReturn(
+        const TvSeriesRecommendationError('Error message'),
+      );
 
       final textFinder = find.text('Error message');
 
@@ -64,11 +93,16 @@ void main() {
   testWidgets(
     'Should display empty container when recommendation state is empty',
     (WidgetTester tester) async {
-      when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-      when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-      when(mockNotifier.recommendationState).thenReturn(RequestState.empty);
-      when(mockNotifier.tvSeriesRecommendations).thenReturn(<TvSeries>[]);
-      when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+      fakeCubitCall();
+      when(() => mockDetailCubit.state).thenReturn(
+        TvSeriesDetailState(
+          state: RequestState.loaded,
+          tvSeriesDetail: testTvSeriesDetail,
+        ),
+      );
+      when(() => mockRecommendationCubit.state).thenReturn(
+        const TvSeriesRecommendationInitial(),
+      );
 
       await tester
           .pumpWidget(makeTestableWidget(const TvSeriesDetailPage(id: 1)));
@@ -78,11 +112,17 @@ void main() {
   testWidgets(
       'Watchlist button should display add icon when tv series not added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeriesRecommendations).thenReturn(testTvSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    fakeCubitCall();
+    when(() => mockDetailCubit.state).thenReturn(
+      TvSeriesDetailState(
+        state: RequestState.loaded,
+        tvSeriesDetail: testTvSeriesDetail,
+        isAddedToWatchlist: false,
+      ),
+    );
+    when(() => mockRecommendationCubit.state).thenReturn(
+      TvSeriesRecommendationLoaded(testTvSeriesList),
+    );
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
@@ -95,11 +135,17 @@ void main() {
   testWidgets(
       'Watchlist button should dispay check icon when tv series is added to wathclist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeriesRecommendations).thenReturn(testTvSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
+    fakeCubitCall();
+    when(() => mockDetailCubit.state).thenReturn(
+      TvSeriesDetailState(
+        state: RequestState.loaded,
+        tvSeriesDetail: testTvSeriesDetail,
+        isAddedToWatchlist: true,
+      ),
+    );
+    when(() => mockRecommendationCubit.state).thenReturn(
+      TvSeriesRecommendationLoaded(testTvSeriesList),
+    );
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
@@ -112,12 +158,18 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeriesRecommendations).thenReturn(testTvSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Added to Watchlist');
+    fakeCubitCall();
+    when(() => mockDetailCubit.state).thenReturn(
+      TvSeriesDetailState(
+        state: RequestState.loaded,
+        tvSeriesDetail: testTvSeriesDetail,
+        isAddedToWatchlist: false,
+        watchlistMessage: TvSeriesDetailCubit.watchlistAddSuccessMessage,
+      ),
+    );
+    when(() => mockRecommendationCubit.state).thenReturn(
+      TvSeriesRecommendationLoaded(testTvSeriesList),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
@@ -136,12 +188,18 @@ void main() {
   testWidgets(
       'Watchlist button should display AlertDialog when add to watchlist failed',
       (WidgetTester tester) async {
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeriesRecommendations).thenReturn(testTvSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
+    fakeCubitCall();
+    when(() => mockDetailCubit.state).thenReturn(
+      TvSeriesDetailState(
+        state: RequestState.loaded,
+        tvSeriesDetail: testTvSeriesDetail,
+        isAddedToWatchlist: false,
+        watchlistMessage: 'Failed',
+      ),
+    );
+    when(() => mockRecommendationCubit.state).thenReturn(
+      TvSeriesRecommendationLoaded(testTvSeriesList),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
@@ -160,12 +218,18 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when removed from watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeries).thenReturn(testTvSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
-    when(mockNotifier.tvSeriesRecommendations).thenReturn(testTvSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-    when(mockNotifier.watchlistMessage).thenReturn('Removed from Watchlist');
+    fakeCubitCall();
+    when(() => mockDetailCubit.state).thenReturn(
+      TvSeriesDetailState(
+        state: RequestState.loaded,
+        tvSeriesDetail: testTvSeriesDetail,
+        isAddedToWatchlist: true,
+        watchlistMessage: TvSeriesDetailCubit.watchlistRemoveSuccessMessage,
+      ),
+    );
+    when(() => mockRecommendationCubit.state).thenReturn(
+      TvSeriesRecommendationLoaded(testTvSeriesList),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 

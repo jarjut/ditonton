@@ -7,9 +7,9 @@ import 'package:ditonton/data/models/tv_series_detail_model.dart';
 import 'package:ditonton/data/models/tv_series_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import '../../helpers/test_helper.dart';
 import '../../json_reader.dart';
 
 void main() {
@@ -34,7 +34,8 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(Uri.parse('$kBaseUrl/tv/on_the_air?$kApiKey')),
+          () =>
+              mockHttpClient.get(Uri.parse('$kBaseUrl/tv/on_the_air?$kApiKey')),
         ).thenAnswer(
           (_) async =>
               http.Response(readJson('dummy_data/now_playing_tv.json'), 200),
@@ -50,7 +51,8 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(Uri.parse('$kBaseUrl/tv/on_the_air?$kApiKey')),
+          () =>
+              mockHttpClient.get(Uri.parse('$kBaseUrl/tv/on_the_air?$kApiKey')),
         ).thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getNowPlayingTvSeries();
@@ -67,8 +69,9 @@ void main() {
       test('should return list of tv series when response is success (200)',
           () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$kBaseUrl/tv/popular?$kApiKey')))
-            .thenAnswer(
+        when(
+          () => mockHttpClient.get(Uri.parse('$kBaseUrl/tv/popular?$kApiKey')),
+        ).thenAnswer(
           (_) async =>
               http.Response(readJson('dummy_data/popular_tv.json'), 200),
         );
@@ -82,8 +85,9 @@ void main() {
           'should throw a ServerException when the response code is 404 or other',
           () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$kBaseUrl/tv/popular?$kApiKey')))
-            .thenAnswer((_) async => http.Response('Not Found', 404));
+        when(
+          () => mockHttpClient.get(Uri.parse('$kBaseUrl/tv/popular?$kApiKey')),
+        ).thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getPopularTvSeries();
         // assert
@@ -100,7 +104,8 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(Uri.parse('$kBaseUrl/tv/top_rated?$kApiKey')),
+          () =>
+              mockHttpClient.get(Uri.parse('$kBaseUrl/tv/top_rated?$kApiKey')),
         ).thenAnswer(
           (_) async =>
               http.Response(readJson('dummy_data/top_rated_tv.json'), 200),
@@ -115,7 +120,8 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(Uri.parse('$kBaseUrl/tv/top_rated?$kApiKey')),
+          () =>
+              mockHttpClient.get(Uri.parse('$kBaseUrl/tv/top_rated?$kApiKey')),
         ).thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTopRatedTvSeries();
@@ -133,7 +139,7 @@ void main() {
       test('should return movie detail when the response code is 200',
           () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$kBaseUrl/tv/$tId?$kApiKey')))
+        when(() => mockHttpClient.get(Uri.parse('$kBaseUrl/tv/$tId?$kApiKey')))
             .thenAnswer(
           (_) async =>
               http.Response(readJson('dummy_data/tv_detail.json'), 200),
@@ -148,7 +154,7 @@ void main() {
           'should throw Server Exception when the response code is 404 or other',
           () async {
         // arrange
-        when(mockHttpClient.get(Uri.parse('$kBaseUrl/tv/$tId?$kApiKey')))
+        when(() => mockHttpClient.get(Uri.parse('$kBaseUrl/tv/$tId?$kApiKey')))
             .thenAnswer((_) async => http.Response('Not Found', 404));
         // act
         final call = dataSource.getTvDetail(tId);
@@ -168,7 +174,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient
+          () => mockHttpClient
               .get(Uri.parse('$kBaseUrl/tv/$tId/recommendations?$kApiKey')),
         ).thenAnswer(
           (_) async => http.Response(
@@ -187,7 +193,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient
+          () => mockHttpClient
               .get(Uri.parse('$kBaseUrl/tv/$tId/recommendations?$kApiKey')),
         ).thenAnswer((_) async => http.Response('Not Found', 404));
         // act
@@ -208,7 +214,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient
+          () => mockHttpClient
               .get(Uri.parse('$kBaseUrl/search/tv?$kApiKey&query=$tQuery')),
         ).thenAnswer(
           (_) async => http.Response(
@@ -226,7 +232,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient
+          () => mockHttpClient
               .get(Uri.parse('$kBaseUrl/search/tv?$kApiKey&query=$tQuery')),
         ).thenAnswer((_) async => http.Response('Not Found', 404));
         // act
@@ -248,7 +254,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(
+          () => mockHttpClient.get(
             Uri.parse('$kBaseUrl/tv/$tId/season/$tSeasonNumber?$kApiKey'),
           ),
         ).thenAnswer(
@@ -267,7 +273,7 @@ void main() {
           () async {
         // arrange
         when(
-          mockHttpClient.get(
+          () => mockHttpClient.get(
             Uri.parse('$kBaseUrl/tv/$tId/season/$tSeasonNumber?$kApiKey'),
           ),
         ).thenAnswer((_) async => http.Response('Not Found', 404));

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/domain/usecases/tvseries/save_watchlist_tv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
-import '../../../helpers/test_helper.mocks.dart';
+import '../../../helpers/test_helper.dart';
 
 void main() {
   late SaveWatchlistTv usecase;
@@ -19,7 +19,7 @@ void main() {
     test('should save watchlist tv with message', () async {
       const tMessage = 'Added to Watchlist';
       // arrange
-      when(mockTvRepository.saveWatchlist(testTvSeriesDetail))
+      when(() => mockTvRepository.saveWatchlist(testTvSeriesDetail))
           .thenAnswer((_) async => const Right(tMessage));
       // act
       final result = await usecase.execute(testTvSeriesDetail);

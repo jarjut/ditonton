@@ -1,10 +1,10 @@
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/datasources/tv_local_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import '../../helpers/test_helper.dart';
 
 void main() {
   late TvLocalDataSourceImpl dataSource;
@@ -20,7 +20,7 @@ void main() {
       test('should return success message when insert to database is success',
           () async {
         // arrange
-        when(mockDatabaseHelper.insertTvWatchlist(testTvSeriesTable))
+        when(() => mockDatabaseHelper.insertTvWatchlist(testTvSeriesTable))
             .thenAnswer((_) async => 1);
         // act
         final result = await dataSource.insertWatchlist(testTvSeriesTable);
@@ -31,7 +31,7 @@ void main() {
       test('should throw DatabaseException when insert to database is failed',
           () async {
         // arrange
-        when(mockDatabaseHelper.insertTvWatchlist(testTvSeriesTable))
+        when(() => mockDatabaseHelper.insertTvWatchlist(testTvSeriesTable))
             .thenThrow(Exception());
         // act
         final call = dataSource.insertWatchlist(testTvSeriesTable);
@@ -44,7 +44,7 @@ void main() {
       test('should return success message when remove from database is success',
           () async {
         // arrange
-        when(mockDatabaseHelper.removeTvWatchlist(testTvSeriesTable))
+        when(() => mockDatabaseHelper.removeTvWatchlist(testTvSeriesTable))
             .thenAnswer((_) async => 1);
         // act
         final result = await dataSource.removeWatchlist(testTvSeriesTable);
@@ -55,7 +55,7 @@ void main() {
       test('should throw DatabaseException when remove from database is failed',
           () async {
         // arrange
-        when(mockDatabaseHelper.removeTvWatchlist(testTvSeriesTable))
+        when(() => mockDatabaseHelper.removeTvWatchlist(testTvSeriesTable))
             .thenThrow(Exception());
         // act
         final call = dataSource.removeWatchlist(testTvSeriesTable);
@@ -69,7 +69,7 @@ void main() {
 
       test('should return TvSeriesTable when data is found', () async {
         // arrange
-        when(mockDatabaseHelper.getTvById(tId))
+        when(() => mockDatabaseHelper.getTvById(tId))
             .thenAnswer((_) async => testTvSeriesMap);
         // act
         final result = await dataSource.getTvSeriesById(tId);
@@ -79,7 +79,8 @@ void main() {
 
       test('should return null when data is not found', () async {
         // arrange
-        when(mockDatabaseHelper.getTvById(tId)).thenAnswer((_) async => null);
+        when(() => mockDatabaseHelper.getTvById(tId))
+            .thenAnswer((_) async => null);
         // act
         final result = await dataSource.getTvSeriesById(tId);
         // assert
@@ -90,7 +91,7 @@ void main() {
     group('get watchlist movies', () {
       test('should return list of TvSeriesTable from database', () async {
         // arrange
-        when(mockDatabaseHelper.getWatchlistTv())
+        when(() => mockDatabaseHelper.getWatchlistTv())
             .thenAnswer((_) async => [testTvSeriesMap]);
         // act
         final result = await dataSource.getWatchlistTvSeries();
@@ -102,7 +103,7 @@ void main() {
           'should throw DatabaseException when get data from database is failed',
           () async {
         // arrange
-        when(mockDatabaseHelper.getWatchlistTv()).thenThrow(Exception());
+        when(() => mockDatabaseHelper.getWatchlistTv()).thenThrow(Exception());
         // act
         final call = dataSource.getWatchlistTvSeries();
         // assert

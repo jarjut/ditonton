@@ -1,30 +1,33 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/episode.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:ditonton/presentation/bloc/tv_series/season_episodes/season_episodes_cubit.dart';
 import 'package:ditonton/presentation/pages/tv_series/season_episodes_page.dart';
-import 'package:ditonton/presentation/provider/season_episodes_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../dummy_data/dummy_objects.dart';
 import '../../../helpers/material_app.dart';
-import 'season_episodes_page_test.mocks.dart';
 
-@GenerateMocks([SeasonEpisodesNotifier])
+class MockSeasonEpisodesCubit extends MockCubit<SeasonEpisodesState>
+    implements SeasonEpisodesCubit {}
+
 void main() {
-  late MockSeasonEpisodesNotifier mockNotifier;
+  late SeasonEpisodesCubit mockCubit;
 
   setUp(() {
-    mockNotifier = MockSeasonEpisodesNotifier();
+    mockCubit = MockSeasonEpisodesCubit();
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<SeasonEpisodesNotifier>.value(
-      value: mockNotifier,
+    return BlocProvider.value(
+      value: mockCubit,
       child: setMaterialApp(home: body),
     );
+  }
+
+  void fakeCubitCall() {
+    when(() => mockCubit.fetchSeasonEpisodes(1, 1)).thenAnswer((_) async {});
   }
 
   group('SeasonEpisodesPage', () {
@@ -33,8 +36,9 @@ void main() {
     testWidgets(
       'should display error message when failed to load data',
       (WidgetTester tester) async {
-        when(mockNotifier.episodeListState).thenReturn(RequestState.error);
-        when(mockNotifier.message).thenReturn('Error message');
+        fakeCubitCall();
+        when(() => mockCubit.state)
+            .thenReturn(const SeasonEpisodesError('Error message'));
 
         final textFinder = find.text('Error message');
 
@@ -54,7 +58,8 @@ void main() {
     testWidgets(
       'should display loading indicator when loading data',
       (WidgetTester tester) async {
-        when(mockNotifier.episodeListState).thenReturn(RequestState.loading);
+        fakeCubitCall();
+        when(() => mockCubit.state).thenReturn(const SeasonEpisodesLoading());
 
         final progressBarFinder = find.byType(CircularProgressIndicator);
         final centerFinder = find.byType(Center);
@@ -76,8 +81,8 @@ void main() {
     testWidgets(
       'should display No episode found when episode is empty',
       (WidgetTester tester) async {
-        when(mockNotifier.episodeListState).thenReturn(RequestState.loaded);
-        when(mockNotifier.episodeList).thenReturn(<Episode>[]);
+        fakeCubitCall();
+        when(() => mockCubit.state).thenReturn(const SeasonEpisodesLoaded([]));
 
         final textFinder = find.text('No episode found');
 
@@ -97,8 +102,9 @@ void main() {
     testWidgets(
       'should display listView when episode loaded',
       (WidgetTester tester) async {
-        when(mockNotifier.episodeListState).thenReturn(RequestState.loaded);
-        when(mockNotifier.episodeList).thenReturn(testEpisodeList);
+        fakeCubitCall();
+        when(() => mockCubit.state)
+            .thenReturn(SeasonEpisodesLoaded(testEpisodeList));
 
         final listViewFinder = find.byType(ListView);
 

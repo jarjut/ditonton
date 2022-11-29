@@ -17,6 +17,20 @@ class MovieDetail extends Equatable {
     required this.voteCount,
   });
 
+  const MovieDetail.empty()
+      : id = 0,
+        adult = false,
+        backdropPath = '',
+        genres = const [],
+        originalTitle = '',
+        overview = '',
+        posterPath = '',
+        releaseDate = '',
+        runtime = 0,
+        title = '',
+        voteAverage = 0,
+        voteCount = 0;
+
   final bool adult;
   final String? backdropPath;
   final List<Genre> genres;
