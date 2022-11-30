@@ -1,4 +1,5 @@
 import 'package:ditonton/common/constants.dart';
+import 'package:ditonton/common/utils.dart';
 import 'package:flutter/material.dart';
 
 MaterialApp setMaterialApp({Widget? home}) {
@@ -9,6 +10,7 @@ MaterialApp setMaterialApp({Widget? home}) {
       scaffoldBackgroundColor: kRichBlack,
       textTheme: kTextTheme,
     ),
+    navigatorObservers: [routeObserver],
     home: home,
   );
 }

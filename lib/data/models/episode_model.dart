@@ -1,5 +1,6 @@
 import 'package:ditonton/domain/entities/episode.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class EpisodeModel extends Equatable {
   final int id;
@@ -45,7 +46,8 @@ class EpisodeModel extends Equatable {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "air_date": airDate?.toIso8601String(),
+        "air_date":
+            airDate == null ? null : DateFormat('yyyy-MM-dd').format(airDate!),
         "episode_number": episodeNumber,
         "name": name,
         "overview": overview,
